@@ -165,7 +165,7 @@ Abaixo seguem alguns passos de "alto nível" que podem ser usados por você para
 [6] Volte ao passo (2)
 ```
 
-## Extra (opcional)
+## Extra (opcional) - 1,0 Ponto
 
 Implemente uma GUI (_graphical user interface_) interativa que auto-complete as consultas do usuário em tempo de digitação! É uma ótima oportunidade para aprender sobre interfaces gráficas em C++!
 
