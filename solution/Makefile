@@ -1,17 +1,46 @@
-build: bin/main.o bin/autocompletar.o bin/termo.o include/listaordenada.h
-	g++ -o bin/main src/termo.cpp src/autocompletar.cpp src/main.cpp -I./include
+# Compiler and flags
+CXX = g++
+CXXFLAGS = -Wall -g -std=c++11
 
-all: bin/main.o bin/autocompletar.o bin/termo.o include/listaordenada.h
-	g++ -o main listaordenada.o termo.o autocompletar.o main.o -I./include
+# Directories
+SRC_DIRS = Autocompletar Functions Termo
+INC_DIRS = Autocompletar Functions Listas Termo
 
-bin/main.o: bin/autocompletar.o bin/termo.o include/listaordenada.h
-	g++ -o bin/main.o -c src/main.cpp -I./include
+# Source files
+SRC_FILES = main.cpp \
+						Autocompletar/autocompletar.cpp \
+						Functions/execution.cpp \
+						Functions/tests.cpp \
+						Termo/termo.cpp
 
-bin/autocompletar.o: bin/termo.o src/autocompletar.cpp include/autocompletar.h include/listaordenada.h
-	g++ -o bin/autocompletar.o -c src/autocompletar.cpp -I./include
+# Header files for dependency generation
+HDR_FILES = $(wildcard Autocompletar/*.h) \
+						$(wildcard Functions/*.h) \
+						$(wildcard Listas/*.h) \
+						$(wildcard Termo/*.h)
 
-bin/termo.o: src/termo.cpp include/termo.h
-	g++ -o bin/termo.o -c src/termo.cpp -I./include
+# Object files
+OBJ_FILES = $(SRC_FILES:.cpp=.o)
 
-clean: 
-	rm -f *.o *.out bin/*
+# Include directories
+INC_FLAGS = $(addprefix -I, $(INC_DIRS))
+
+# Executable name
+TARGET = Main
+
+# Default target
+all: $(TARGET)
+
+# Linking
+$(TARGET): $(OBJ_FILES)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+# Compilation
+%.o: %.cpp $(HDR_FILES)
+	$(CXX) $(CXXFLAGS) $(INC_FLAGS) -c $< -o $@
+
+# Clean up
+clean:
+	rm -f $(OBJ_FILES) $(TARGET)
+
+.PHONY: all clean
